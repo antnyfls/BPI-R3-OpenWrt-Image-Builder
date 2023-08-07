@@ -1,0 +1,28 @@
+name: Build Banana BPI R3 Firmware
+on: [push]
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+             - name: Checkout
+               uses: actions/checkout@v3
+             - name: Build Firmware
+               run: |
+                wget https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/openwrt-imagebuilder-mediatek-filogic.Linux-x86_64.tar.xz
+                tar -xf openwrt-imagebuilder-mediatek-filogic.Linux-x86_64.tar.xz
+                mkdir -p openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/files/etc/config
+                cp .github/workflows/dockerd openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/files/etc/config
+                cp .github/workflows/*.ipk openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/packages/
+                cd openwrt-imagebuilder-mediatek-filogic.Linux-x86_64
+                make image PROFILE=bananapi_bpi-r3 ROOTFS_PARTSIZE="256" PACKAGES="luci-app-openvpn openvpn-openssl openvpn-easy-rsa collectd-mod-conntrack collectd-mod-irq collectd-mod-thermal luci-app-ksmbd luci-proto-wireguard bash blkid block-mount blockd btrfs-progs ca-certificates cgi-io collectd collectd-mod-cpu collectd-mod-interface collectd-mod-iwinfo collectd-mod-load collectd-mod-memory collectd-mod-network collectd-mod-rrdtool containerd -dnsmasq dnsmasq-full docker docker-compose dockerd fdisk fstools fwtool getrandom iw iwinfo jansson jshn jsonfilter kernel kmod-asn1-decoder kmod-asn1-encoder kmod-br-netfilter kmod-crypto-acompress kmod-crypto-aead kmod-crypto-authenc kmod-crypto-cbc kmod-crypto-ccm kmod-crypto-cmac kmod-crypto-crc32c kmod-crypto-ctr kmod-crypto-deflate kmod-crypto-des kmod-crypto-echainiv kmod-crypto-gcm kmod-crypto-gf128 kmod-crypto-ghash kmod-crypto-hash kmod-crypto-hmac kmod-crypto-manager kmod-crypto-md5 kmod-crypto-michael-mic kmod-crypto-null kmod-crypto-rng kmod-crypto-seqiv kmod-crypto-sha1 kmod-crypto-sha256 kmod-dax kmod-dm kmod-dummy kmod-fs-autofs4 kmod-fs-btrfs kmod-fs-exfat kmod-fs-ext4 kmod-fs-ntfs3 kmod-fuse kmod-hwmon-core kmod-ikconfig kmod-ipsec kmod-ipt-conntrack kmod-ipt-core kmod-ipt-extra kmod-ipt-nat kmod-ipt-nat6 kmod-ipt-physdev kmod-iptunnel kmod-keys-encrypted kmod-keys-trusted kmod-lib-crc-ccitt kmod-lib-crc16 kmod-lib-crc32c kmod-lib-lzo kmod-lib-raid6 kmod-lib-textsearch kmod-lib-xor kmod-lib-zlib-deflate kmod-lib-zlib-inflate kmod-lib-zstd kmod-libphy kmod-macvlan kmod-nf-conntrack kmod-nf-conntrack-netlink kmod-nf-conntrack6 kmod-nf-flow kmod-nf-ipt kmod-nf-ipt6 kmod-nf-ipvs kmod-nf-log kmod-nf-log6 kmod-nf-nat kmod-nf-nat6 kmod-nf-nathelper kmod-nf-nathelper-extra kmod-nf-reject kmod-nf-reject6 kmod-nfnetlink kmod-nft-compat kmod-nft-core kmod-nft-fib kmod-nft-nat kmod-nft-offload kmod-nls-base kmod-oid-registry kmod-ppp kmod-pppoe kmod-pppox kmod-random-core kmod-scsi-core kmod-slhc kmod-thermal kmod-tpm kmod-udptunnel4 kmod-udptunnel6 kmod-usb-core kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas kmod-usb-xhci-hcd kmod-usb3 kmod-veth kmod-vxlan libattr libblkid libblobmsg-json libcap libcomerr libdevmapper libevdev libext2fs libfdisk libgmp libiptext libiptext-nft libiptext6 libiwinfo libiwinfo-data libjson-c libjson-script libltdl liblua liblucihttp liblucihttp-lua liblucihttp-ucode liblzo libmbedtls libmnl libmount libncurses libnetfilter-conntrack libnettle libnfnetlink libnftnl libnl-tiny libopenssl libparted libreadline librrd1 libseccomp libsmartcols libss libubox libubus libubus-lua libuci libuclient libucode libudev-zero libusb-1.0 libustream-mbedtls libuuid libuv libwebsockets-full libxtables logd lsblk lua luci luci-app-dockerman luci-app-firewall luci-app-opkg luci-app-statistics luci-app-ttyd luci-base luci-compat luci-lib-base luci-lib-docker luci-lib-ip luci-lib-jsonc luci-lib-nixio luci-light luci-lua-runtime luci-mod-admin-full luci-mod-network luci-mod-status luci-mod-system luci-proto-ipv6 luci-proto-ppp luci-theme-bootstrap mount-utils mtd nftables-json ntfs-3g odhcp6c odhcpd-ipv6only openwrt-keyring parted ppp procd procd-seccomp procd-ujail rpcd rpcd-mod-file rpcd-mod-iwinfo rpcd-mod-luci rpcd-mod-rrdns rpcd-mod-ucode rrdtool1 runc smartmontools terminfo tini ttyd ubi-utils ubox ubus ubusd ucode ucode-mod-fs ucode-mod-html ucode-mod-lua ucode-mod-math ucode-mod-ubus ucode-mod-uci uhttpd uhttpd-mod-ubus usbutils usign vsftpd wireless-regdb xtables-nft zlib btop htop ucert luci-app-commands luci-app-pbr luci-app-adblock adb collectd-mod-sensors pciutils smartmontools-drivedb kmod-ata-ahci kmod-ata-core kmod-nvme kmod-usb-net-rndis resolveip wget-ssl ip-full ethtool iperf3-ssl tcpdump-mini luci-app-sqm luci-app-nlbwmon kmod-mtd-rw luci-app-diskman collectd-mod-cpufreq"
+             - name: Release build artifacts
+               uses: ncipollo/release-action@v1.12.0
+               with:
+                 allowUpdates: true
+                 prerelease: false
+                 name: Banana BPI R3 Firmware
+                 tag: snapshots
+                 token: ${{ secrets.GITHUB_TOKEN }}
+                 artifacts: openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/bin/targets/mediatek/filogic/*
