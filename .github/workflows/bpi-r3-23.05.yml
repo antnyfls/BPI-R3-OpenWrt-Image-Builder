@@ -1,5 +1,7 @@
 name: Build Banana BPI R3 v23.05.0 Firmware
-on: [push]
+on:
+  schedule:
+    - cron: '0 0 1 * *'
 
 jobs:
     build:
