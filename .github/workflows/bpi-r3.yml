@@ -23,7 +23,7 @@ jobs:
                with:
                  allowUpdates: true
                  prerelease: false
-                 name: Banana BPI R3 Firmware [2023-12-18]
+                 name: Banana BPI R3 Firmware [2023-12-27]
                  tag: snapshot-version-${{ env.REVISION }}
                  token: ${{ secrets.GITHUB_TOKEN }}
                  artifacts: openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/bin/targets/mediatek/filogic/*
