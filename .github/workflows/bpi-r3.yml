@@ -1,7 +1,6 @@
 name: Build Banana BPI R3 Firmware
 on:
   workflow_dispatch:
-  push:
 jobs:
     build:
         name: Build
