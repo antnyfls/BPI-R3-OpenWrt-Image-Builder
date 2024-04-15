@@ -11,8 +11,8 @@ jobs:
                uses: actions/checkout@v4
              - name: Build Firmware
                run: |
-                wget https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/openwrt-imagebuilder-mediatek-filogic.Linux-x86_64.tar.xz
-                tar -xf openwrt-imagebuilder-mediatek-filogic.Linux-x86_64.tar.xz
+                wget https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/openwrt-imagebuilder-mediatek-filogic.Linux-x86_64.tar.zst
+                tar -xf openwrt-imagebuilder-mediatek-filogic.Linux-x86_64.tar.zst
                 mkdir -p openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/files/etc/config
                 cp .github/workflows/dockerd openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/files/etc/config
                 cp .github/workflows/*.ipk openwrt-imagebuilder-mediatek-filogic.Linux-x86_64/packages/
